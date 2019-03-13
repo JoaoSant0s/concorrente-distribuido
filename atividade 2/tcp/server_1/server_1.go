@@ -48,14 +48,14 @@ func start(conn net.Conn, conn2 net.Conn){
 
 		newMessage, _ := bufio.NewReader(conn2).ReadString('\n')
 
-		extractedValue := extractNumberString(newMessage)
+		extractedValue := TrimString(newMessage)
 
 		_, err := strconv.Atoi(extractedValue)		
 
 		if err != nil {
 			fmt.Println("Retornando resultado")
 			b, _ := strconv.ParseBool(extractedValue)
-			extractedNumber := extractNumberString(message)			
+			extractedNumber := TrimString(message)			
 			if b {
 				conn.Write([]byte("O número " + extractedNumber + " é primo\n"))			
 			}else{
@@ -68,8 +68,6 @@ func start(conn net.Conn, conn2 net.Conn){
 	}
 }
 
-func extractNumberString(value string) string{
-	newValue := strings.ReplaceAll(value, "\r", "")
-	newValue = strings.ReplaceAll(newValue, "\n", "")
-	return newValue
+func TrimString(value string) string{
+	return strings.Trim(value, "\n\r ")		
 }

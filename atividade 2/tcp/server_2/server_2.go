@@ -35,7 +35,7 @@ func start(conn net.Conn){
 	for {
 		message, _ := bufio.NewReader(conn).ReadString('\n')
 
-		value := extractNumberString(message)		
+		value := TrimString(message)		
 		
 		i, err := strconv.Atoi(value)
 
@@ -49,10 +49,8 @@ func start(conn net.Conn){
 	}
 }
 
-func extractNumberString(value string) string{
-	newValue := strings.ReplaceAll(value, "\r", "")
-	newValue = strings.ReplaceAll(newValue, "\n", "")
-	return newValue
+func TrimString(value string) string{
+	return strings.Trim(value, "\n\r ")	
 }
 
 func isPrimo(n int) bool {
