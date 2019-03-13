@@ -9,6 +9,8 @@ import (
 )
 
 func main() {	
+	fmt.Println("Initing server 1")
+
 	ln, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		fmt.Println(err)
@@ -17,6 +19,8 @@ func main() {
 
 	if err != nil {
 		fmt.Println(err)
+	} else{
+		fmt.Println("Connection with client")
 	}
 
 	defer conn.Close()	
@@ -25,10 +29,18 @@ func main() {
 
 	if err2 != nil {
 		fmt.Println(err2)
+	}else{
+		fmt.Println("Connection with server 2")
 	}
 
 	defer conn2.Close()
+
+	fmt.Println("Establishing readers")
 		
+	start(conn, conn2)
+}
+
+func start(conn net.Conn, conn2 net.Conn){
 	for {
 		message, _ := bufio.NewReader(conn).ReadString('\n')		
 		
@@ -38,18 +50,19 @@ func main() {
 
 		extractedValue := extractNumberString(newMessage)
 
-		_, err := strconv.Atoi(extractedValue)
+		_, err := strconv.Atoi(extractedValue)		
 
 		if err != nil {
+			fmt.Println("Retornando resultado")
 			b, _ := strconv.ParseBool(extractedValue)
-			extractedNumber := extractNumberString(message)
-			conn.Write([]byte("Checando... \n"))	
+			extractedNumber := extractNumberString(message)			
 			if b {
 				conn.Write([]byte("O número " + extractedNumber + " é primo\n"))			
 			}else{
 				conn.Write([]byte("O número " + extractedNumber + " não é primo\n"))			
 			}
-		} else {	
+		} else {
+			fmt.Println("Retornando erro")
 			conn.Write([]byte("Erro: Digite um número Natural válido.\n"))
 		}				
 	}

@@ -10,6 +10,8 @@ import (
 )
 
 func main() {
+	fmt.Println("Initing server 2")
+
 	ln, err := net.Listen("tcp", ":1313")
 	if err != nil {
 		fmt.Println(err)
@@ -18,10 +20,18 @@ func main() {
 
 	if err != nil {
 		fmt.Println(err)
+	}else{
+		fmt.Println("Connection with server 1")
 	}
 
-	defer conn.Close()		
-		
+	defer conn.Close()	
+	
+	fmt.Println("Establishing readers")
+
+	start(conn)
+}
+
+func start(conn net.Conn){
 	for {
 		message, _ := bufio.NewReader(conn).ReadString('\n')
 
@@ -29,6 +39,7 @@ func main() {
 		
 		i, err := strconv.Atoi(value)
 
+		fmt.Println("Checking input ... " + value)
 		if err != nil {
 			conn.Write([]byte("-1\n"))
 		} else {	

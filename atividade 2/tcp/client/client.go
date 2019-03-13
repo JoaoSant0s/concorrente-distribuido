@@ -14,17 +14,21 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	} else {				
-		for {
-			reader := bufio.NewReader(os.Stdin)
-			fmt.Print("Digite um número: ")
-			text, _ := reader.ReadString('\n')
-
-			fmt.Fprintf(conn, text + "\n")			
-
-			message, _ := bufio.NewReader(conn).ReadString('\n')
-
-			fmt.Print(message)							
-		}						
+		start(conn)
 	}
 	conn.Close()	
+}
+
+func start(conn net.Conn){
+	for {
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print("Digite um número: ")
+		text, _ := reader.ReadString('\n')
+
+		fmt.Fprintf(conn, text + "\n")			
+
+		message, _ := bufio.NewReader(conn).ReadString('\n')
+
+		fmt.Print(message)							
+	}	
 }
