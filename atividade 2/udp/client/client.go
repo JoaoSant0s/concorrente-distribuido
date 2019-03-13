@@ -5,6 +5,7 @@ import (
 	"net"
 	"bufio"	
 	"os"
+	"time"
 )
 
 func main() {
@@ -25,10 +26,15 @@ func start(conn net.Conn){
 		fmt.Print("Digite um número: ")
 		text, _ := reader.ReadString('\n')
 
+		start := time.Now()
 		fmt.Fprintf(conn, text + "\n")			
 
 		message, _ := bufio.NewReader(conn).ReadString('\n')
 
-		fmt.Print(message)							
+		t := time.Now()
+		elapsed := t.Sub(start)
+
+		fmt.Print(message)
+		fmt.Printf("The call took %v to run.\n\n", elapsed)								
 	}	
 }
