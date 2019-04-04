@@ -11,49 +11,42 @@ import (
 )
 
 func main() {
-	// conecta ao servidor de mensageria
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:8080/")
-	shared.ChecaErro(err, "Não foi possível se conectar ao servidor de mensageria")
+	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	shared.ChecaErro(err, "Não foi possível se conectar ao servidor")
 	defer conn.Close()
 
-	// cria o canal
 	ch, err := conn.Channel()
-	shared.ChecaErro(err, "Não foi possível estabelecer um canal de comunicação com o servidor de mensageria")
+	shared.ChecaErro(err, "Não foi possível estabelecer um canal de comunicação com o servidor")
 	defer ch.Close()
 
-	// declara as filas
 	requestQueue, err := ch.QueueDeclare(
 		"request", false, false, false, false, nil)
-	shared.ChecaErro(err, "Não foi possível criar a fila no servidor de mensageria")
+	shared.ChecaErro(err, "Não foi possível criar a fila no servidor")
 
 	replyQueue, err := ch.QueueDeclare(
 		"response", false, false, false, false, nil)
-	shared.ChecaErro(err, "Não foi possível criar a fila no servidor de mensageria")
+	shared.ChecaErro(err, "Não foi possível criar a fila no servidor")
 	
-	// cria consumidor
 	msgsFromServer, err := ch.Consume(replyQueue.Name, "", true, false,
 		false, false, nil)
-	shared.ChecaErro(err, "Falha ao registrar o consumidor servidor de mensageria")
+	shared.ChecaErro(err, "Falha ao registrar o consumidor servidor")
 
 	var average float64
 
 	start := time.Now()
 
-	//start := time.Now()
 	for i := 0; i < shared.Iterations; i++ {
 
 		t1 := time.Now()
 		y := rand.Intn(5000)
 
-		// prepara request
 		msgRequest := shared.Request{Op: "prime", P1: y}
 		msgRequestBytes, err := json.Marshal(msgRequest)
 		shared.ChecaErro(err, "Falha ao serializar a mensagem")
 
-		// publica request
 		err = ch.Publish("", requestQueue.Name, false, false,
 			amqp.Publishing{ContentType: "text/plain", Body: msgRequestBytes})
-		shared.ChecaErro(err, "Falha ao enviar a mensagem para o servidor de mensageria")
+		shared.ChecaErro(err, "Falha ao enviar a mensagem para o servidor")
 
 		fmt.Println(<-msgsFromServer)
 
