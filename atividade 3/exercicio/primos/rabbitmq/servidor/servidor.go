@@ -12,26 +12,26 @@ import (
 
 func main() {
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:8080/")
-	shared.ChecaErro(err, "Não foi possível se conectar ao servidor de mensageria")
+	shared.ChecaErro(err, "Não foi possível se conectar ao servidor")
 	defer conn.Close()
 
 	ch, err := conn.Channel()
-	shared.ChecaErro(err, "Não foi possível estabelecer um canal de comunicação com o servidor de mensageria")
+	shared.ChecaErro(err, "Não foi possível estabelecer um canal de comunicação com o servidor")
 	defer ch.Close()
 
 	// declaração de filas
 	requestQueue, err := ch.QueueDeclare("request", false, false, false,
 		false, nil)
-	shared.ChecaErro(err, "Não foi possível criar a fila no servidor de mensageria")
+	shared.ChecaErro(err, "Não foi possível criar a fila no servidor")
 
 	replyQueue, err := ch.QueueDeclare("response", false, false, false,
 		false, nil)
-	shared.ChecaErro(err, "Não foi possível criar a fila no servidor de mensageria")
+	shared.ChecaErro(err, "Não foi possível criar a fila no servidor")
 
 	// prepara o recebimento de mensagens do cliente
 	msgsFromClient, err := ch.Consume(requestQueue.Name, "", true, false,
 		false, false, nil)
-	shared.ChecaErro(err, "Falha ao registrar o consumidor do servidor de mensageria")
+	shared.ChecaErro(err, "Falha ao registrar o consumidor do servidor")
 
 	fmt.Println("Servidor pronto...")
 	for d := range msgsFromClient {

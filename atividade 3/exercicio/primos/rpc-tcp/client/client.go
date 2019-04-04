@@ -1,4 +1,4 @@
-package main
+-package main
 
 import (
 	"fmt"
@@ -12,23 +12,22 @@ import (
 func clienteRPCTCP() {
 	var reply bool
 
-	// conectar ao servidor
 	client, err := rpc.Dial("tcp", ":"+strconv.Itoa(shared.Prime_Port))
-	shared.ChecaErro(err, "Servidor não está pronto")
+	shared.ChecaErro(err, "Não foi possivel conectar ao servidor")
 
 	defer client.Close()
 	var average float64
-	// loop
+
 	start := time.Now()
 	for i := 0; i < shared.Iterations; i++ {
 
 		t1 := time.Now()
 
 		x := rand.Intn(5000)
-		// prepara request
+
 		args := shared.Args{A: x}
 		fmt.Printf("Número: %d \n", x)
-		// invoca request
+
 		client.Call("Prime.Prime", args, &reply)
 
 		fmt.Println(reply)

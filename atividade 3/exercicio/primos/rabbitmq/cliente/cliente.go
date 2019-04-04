@@ -29,7 +29,7 @@ func main() {
 	replyQueue, err := ch.QueueDeclare(
 		"response", false, false, false, false, nil)
 	shared.ChecaErro(err, "Não foi possível criar a fila no servidor de mensageria")
-
+	
 	// cria consumidor
 	msgsFromServer, err := ch.Consume(replyQueue.Name, "", true, false,
 		false, false, nil)
