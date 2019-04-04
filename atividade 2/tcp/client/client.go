@@ -17,7 +17,7 @@ func main() {
 	} else {				
 		start(conn)
 	}
-	conn.Close()
+	defer conn.Close()	
 }
 
 func start(conn net.Conn){
