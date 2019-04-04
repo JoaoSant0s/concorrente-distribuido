@@ -32,3 +32,8 @@ Como proposto pelo professor, o rabbitmq do middleware tem refêrencias encontra
 
 - [Rabbitmq](https://www.rabbitmq.com/tutorials/tutorial-one-go.html)
 - [go-amqp-example](https://github.com/andreagrandi/go-amqp-example)
+
+
+`
+Não foi possível se conectar ao servidor de mensageria!!: dial tcp [::1]:8080: connectex: Nenhuma conexão pôde ser feita porque a máquina de destino as recusou ativamente.                                                 exit status 1                                                          
+`
