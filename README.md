@@ -1,3 +1,10 @@
+# GoLand
+
+- Instale o GoLand
+- Abra o projeto atividade_4 pelo goland
+- Verifique se perde a referência de scripts
+- Para tentar corrigir, vá em File->Settings-> Go -> GOPATH
+- Na Opção "Project GOPATH" coloque o diretório atual. "atividade_4" deve ser sua raiz, para não ter conflito com outras bibliotecas de outras atividades
 
 # concorrente-distribuido
 
